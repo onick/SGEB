@@ -412,7 +412,7 @@ const DevelopmentPlan = () => {
       </div>
 
       {/* Estadísticas */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-6 gap-4 mb-8">
         <div className="bg-white p-6 rounded-lg border">
           <div className="flex items-center justify-between">
             <div>
@@ -450,6 +450,31 @@ const DevelopmentPlan = () => {
               <p className="text-2xl font-bold text-gray-600">{stats.pending}</p>
             </div>
             <Circle className="w-8 h-8 text-gray-400" />
+          </div>
+        </div>
+
+        {/* Nuevas tarjetas de estadísticas adicionales */}
+        <div className="bg-white p-6 rounded-lg border">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm font-medium text-gray-600">Horas Estimadas</p>
+              <p className="text-2xl font-bold text-purple-600">
+                {tasks.reduce((total, task) => total + (task.estimatedHours || 0), 0)}h
+              </p>
+            </div>
+            <BarChart3 className="w-8 h-8 text-purple-400" />
+          </div>
+        </div>
+
+        <div className="bg-white p-6 rounded-lg border">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm font-medium text-gray-600">Alta Prioridad</p>
+              <p className="text-2xl font-bold text-red-600">
+                {tasks.filter(t => t.priority === 'high').length}
+              </p>
+            </div>
+            <AlertCircle className="w-8 h-8 text-red-400" />
           </div>
         </div>
       </div>
