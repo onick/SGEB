@@ -1,114 +1,74 @@
-import { A, useLocation } from '@solidjs/router';
-import { createSignal } from 'solid-js';
+import React from 'react';
+import { NavLink } from 'react-router-dom';
+import { 
+  Home, 
+  Calendar, 
+  Users, 
+  FileText, 
+  Settings,
+  Clipboard,
+  Target
+} from 'lucide-react';
 
-function Sidebar() {
-  const location = useLocation();
-  const [isCollapsed, setIsCollapsed] = createSignal(false);
-
+const Sidebar = () => {
   const menuItems = [
     {
-      path: '/admin/dashboard',
-      label: 'Dashboard',
-      icon: '📊'
+      name: 'Dashboard',
+      icon: Home,
+      path: '/admin'
     },
     {
-      path: '/admin/events',
-      label: 'Eventos',
-      icon: '🎭'
+      name: 'Plan de Desarrollo',
+      icon: Target,
+      path: '/admin/development-plan'
     },
     {
-      path: '/admin/visitors',
-      label: 'Visitantes',
-      icon: '👥'
+      name: 'Eventos',
+      icon: Calendar,
+      path: '/admin/events'
     },
     {
-      path: '/admin/reports',
-      label: 'Reportes',
-      icon: '📈'
+      name: 'Visitantes',
+      icon: Users,
+      path: '/admin/visitors'
+    },
+    {
+      name: 'Reportes',
+      icon: FileText,
+      path: '/admin/reports'
     }
   ];
 
-  const sidebarStyle = () => ({
-    width: isCollapsed() ? '70px' : '250px',
-    height: '100vh',
-    backgroundColor: '#1a365d',
-    color: 'white',
-    display: 'flex',
-    flexDirection: 'column',
-    transition: 'width 0.3s ease',
-    position: 'fixed',
-    left: 0,
-    top: 0,
-    zIndex: 1000,
-    boxShadow: '2px 0 5px rgba(0,0,0,0.1)'
-  });
-
-  const headerStyle = {
-    padding: '20px',
-    borderBottom: '1px solid #2d3748',
-    textAlign: 'center',
-    fontWeight: 'bold',
-    fontSize: '18px'
-  };
-
-  const menuStyle = {
-    flex: 1,
-    paddingTop: '20px'
-  };
-
-  const menuItemStyle = (isActive) => ({
-    display: 'flex',
-    alignItems: 'center',
-    padding: '12px 20px',
-    textDecoration: 'none',
-    color: 'white',
-    backgroundColor: isActive ? '#2b6cb0' : 'transparent',
-    borderLeft: isActive ? '4px solid #4299e1' : '4px solid transparent',
-    transition: 'all 0.2s',
-    cursor: 'pointer'
-  });
-
-  const iconStyle = {
-    fontSize: '20px',
-    marginRight: isCollapsed() ? '0' : '12px',
-    minWidth: '20px'
-  };
-
-  const toggleStyle = {
-    padding: '15px',
-    borderTop: '1px solid #2d3748',
-    textAlign: 'center',
-    cursor: 'pointer',
-    backgroundColor: '#2d3748',
-    color: '#a0aec0'
-  };
-
   return (
-    <div style={sidebarStyle()}>
-      <div style={headerStyle}>
-        {!isCollapsed() ? 'SGEV Admin' : '🏛️'}
+    <div className="bg-white w-64 min-h-screen shadow-sm border-r border-gray-200">
+      <div className="p-6">
+        <h2 className="text-xl font-bold text-gray-800">SGEV2 Admin</h2>
+        <p className="text-sm text-gray-500">Panel de Administración</p>
       </div>
       
-      <nav style={menuStyle}>
-        {menuItems.map(item => (
-          <A 
-            href={item.path}
-            style={menuItemStyle(location.pathname === item.path)}
-          >
-            <span style={iconStyle}>{item.icon}</span>
-            {!isCollapsed() && <span>{item.label}</span>}
-          </A>
-        ))}
+      <nav className="mt-6">
+        <ul className="space-y-1 px-3">
+          {menuItems.map((item) => (
+            <li key={item.name}>
+              <NavLink
+                to={item.path}
+                className={({ isActive }) =>
+                  `flex items-center px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+                    isActive
+                      ? 'bg-blue-50 text-blue-700 border-r-2 border-blue-700'
+                      : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
+                  }`
+                }
+              >
+                <item.icon className="w-5 h-5 mr-3" />
+                {item.name}
+              </NavLink>
+            </li>
+          ))}
+        </ul>
       </nav>
-
-      <div 
-        style={toggleStyle}
-        onClick={() => setIsCollapsed(!isCollapsed())}
-      >
-        {isCollapsed() ? '▶️' : '◀️'}
-      </div>
     </div>
   );
-}
+};
 
 export default Sidebar; 
